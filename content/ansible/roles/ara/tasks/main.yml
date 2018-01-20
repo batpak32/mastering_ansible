@@ -1,22 +1,34 @@
 ---
-# tasks file for ara
+#   Copyright 2017 Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+
 - name: Include OS family/distribution specific variables
   include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
 
-- name: install dependencies
+- name: Install required dependencies
   package:
     name: "{{ item }}"
-    state: present
-  with_items:
-    - "{{ required_packages }}"
+    state: "present"
+  with_items: "{{ required_packages }}"
 
-- name: install pip
-  easy_install:
-      name: pip
-      state: latest
+- name: Install pip
+  easy_install: 
+    name: pip 
+    state: present
 
 - name: Install ARA with pip
   pip:
@@ -72,13 +84,13 @@
         group: root
         mode: 0644
       notify:
-        - restart apache
+        - Restart Apache
 
     - name: Ensure the configuration is enabled
       command: a2ensite ara
       when: ansible_os_family == "Debian"
       notify:
-       - restart apache
+       - Restart Apache
 
     - name: Flush handlers
       meta: flush_handlers
@@ -158,6 +170,7 @@
     msg: >-
       We've set up an ansible.cfg file for you inside {{ ara_config_path }}.
       Make sure to have Ansible and ARA use it for everything to work properly.
+
       This can be done from using Ansible or the ARA CLI commands directly from that directory or by using the ANSIBLE_CONFIG environment variable, like so:
       export ANSIBLE_CONFIG={{ ara_config_path }}/ansible.cfg
   debug:

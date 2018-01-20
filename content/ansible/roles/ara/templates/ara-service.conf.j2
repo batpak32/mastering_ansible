@@ -3,6 +3,8 @@ Description=ARA
 After=network.target
 
 [Service]
+User=ansible
+Group=ansible
 Type=simple
 TimeoutStartSec=0
 Restart=on-failure
