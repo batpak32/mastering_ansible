@@ -1,0 +1,21 @@
+---
+# defaults file for ara
+
+# Default paths where an ansible.cfg file is expected
+default_embedded_config_path: "{{ lookup('env','HOME') }}"
+default_wsgi_config_path: "/var/www/ara"
+
+# Override the path where an ansible.cfg file will be used
+# config_path:
+
+# Host to listen on for embedded server or apache
+ara_host: "control"
+
+# Port to listen on for embedded server or apache
+ara_port: "80"
+
+# Deploy with apache and mod_wsgi
+mod_wsgi: true
+
+# Deploy with persistent embedded_webserver
+embedded_server: false

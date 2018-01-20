@@ -1,0 +1,10 @@
+---
+# handlers file for ara
+- name: restart apache
+  service:
+   name: "{{ apache_service }}"
+   state: "restarted"
+   enabled: yes
+
+- name: Reload systemctl
+  command: systemctl daemon-reload

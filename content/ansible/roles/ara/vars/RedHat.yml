@@ -1,0 +1,23 @@
+---
+
+required_packages:
+  - gcc
+  - libffi-devel
+  - libselinux-python
+  - libxml2-devel
+  - libxslt-devel
+  - openssl-devel
+  - python-devel
+  - python-setuptools
+  - redhat-rpm-config
+  - which
+
+required_wsgi_packages:
+  - httpd
+  - mod_wsgi
+
+apache_service: httpd
+apache_user: apache
+apache_group: apache
+apache_log_path: /var/log/httpd
+apache_config_path: /etc/httpd/conf.d
