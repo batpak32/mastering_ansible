@@ -16,8 +16,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.define "control", primary: true do |h|
-    h.vm.synced_folder "/Users/barryjo/mastering-ansible/content", "/work",
-      owner: "ansible", group: "ansible"
+    h.vm.box = "geerlingguy/centos7"
     h.vm.network "private_network", ip: "192.168.135.10"
     h.vm.hostname = "control"
     h.vm.provision :shell, :inline => <<'EOF'
@@ -33,7 +32,9 @@ Host *
 SSHEOF
 
 chown -R vagrant:vagrant /home/vagrant/.ssh/
-useradd -m ansible
+if [ -z "$(getent passwd ansible)" ]; then
+    useradd -m ansible
+fi
 
 if [ ! -f "/home/ansible/.ssh/id_rsa" ]; then
   mkdir -p /home/ansible/.ssh
@@ -54,6 +55,8 @@ SSHEOF
 
 chown -R ansible:ansible /home/ansible/.ssh/
 EOF
+h.vm.synced_folder "/Users/barryjo/mastering-ansible/content", "/work",
+  owner: "ansible", group: "ansible"
   end
 
   config.vm.define "lb01" do |h|
@@ -61,7 +64,9 @@ EOF
     h.vm.hostname = "lb01"
     h.vm.provision :shell, :inline => <<'EOF'
 cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys
-useradd -m ansible
+if [ -z "$(getent passwd ansible)" ]; then
+    useradd -m ansible
+fi
 mkdir -p /home/ansible/.ssh
 cat /vagrant/ansible.pub >> /home/ansible/.ssh/authorized_keys
 
@@ -85,7 +90,9 @@ EOF
     h.vm.hostname = "app01"
     h.vm.provision :shell, :inline => <<'EOF'
 cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys
-useradd -m ansible
+if [ -z "$(getent passwd ansible)" ]; then
+    useradd -m ansible
+fi
 mkdir -p /home/ansible/.ssh
 cat /vagrant/ansible.pub >> /home/ansible/.ssh/authorized_keys
 
@@ -109,7 +116,9 @@ EOF
     h.vm.hostname = "app02"
     h.vm.provision :shell, :inline => <<'EOF'
 cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys
-useradd -m ansible
+if [ -z "$(getent passwd ansible)" ]; then
+    useradd -m ansible
+fi
 mkdir -p /home/ansible/.ssh
 cat /vagrant/ansible.pub >> /home/ansible/.ssh/authorized_keys
 
@@ -133,7 +142,9 @@ EOF
     h.vm.hostname = "db01"
     h.vm.provision :shell, :inline => <<'EOF'
 cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys
-useradd -m ansible
+if [ -z "$(getent passwd ansible)" ]; then
+    useradd -m ansible
+fi
 mkdir -p /home/ansible/.ssh
 cat /vagrant/ansible.pub >> /home/ansible/.ssh/authorized_keys
 
