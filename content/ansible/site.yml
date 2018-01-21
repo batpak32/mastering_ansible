@@ -6,6 +6,7 @@
     - name: update apt cache
       apt: update_cache=yes cache_valid_time=86400
       when: "'control' not in group_names"
+      tags: [ 'packages' ]
 
 - import_playbook: control.yml
 - import_playbook: database.yml
