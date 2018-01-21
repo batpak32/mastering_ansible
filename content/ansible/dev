@@ -8,8 +8,5 @@ app02
 [database]
 db01
 
-[ara]
-ara01
-
 [control]
 control ansible_connection=local
